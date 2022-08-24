@@ -7,6 +7,9 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
+    "@element-plus/icons": "^0.0.11",
+    "drawflow": "^0.0.59",
+    "element-plus": "^2.2.14",
     "vue": "^3.2.37"
   },
   "devDependencies": {
