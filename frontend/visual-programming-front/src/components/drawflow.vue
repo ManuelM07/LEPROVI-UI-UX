@@ -3,7 +3,7 @@
 <el-container>
   <el-header class="header">
       <h3>Visual Programming</h3>
-      <el-button type="primary"   @click="exportEditor">Export</el-button>
+      <el-button type="primary"   @click="exportEditor">Run</el-button>
   </el-header>
   <el-container class="container">
     <el-aside width="250px" class="column">
@@ -21,10 +21,11 @@
 <el-dialog
     v-model="dialogVisible"
     title="Export"
-    width="50%"
+    width="70%"
   >
-    <span>Data:</span>
-    <pre><code>{{dialogData}}</code></pre>
+  <div>
+    <Code codex="print('Hellooo!')"/>
+  </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
@@ -44,17 +45,22 @@ import { onMounted, shallowRef, h, getCurrentInstance, render, readonly, ref } f
 import NodeMath from './nodes/nodeMath.vue'
 import NodeNumber from './nodes/nodeNumber.vue'
 import NodePrint from './nodes/nodePrint.vue'
-import NodeAssing from './nodes/nodeAssing.vue'
+import NodeAssign from './nodes/nodeAssign.vue'
 import NodeIf from './nodes/nodeIf.vue'
 import NodeElse from './nodes/nodeElse.vue'
 import NodeFor from './nodes/nodeFor.vue'
 import NodeComOp from './nodes/nodeComOp.vue'
 import EventService from "@/services/endpoints.js";
+import Code from '../views/Codex.vue'
+
 
 
 
 export default {
   name: 'drawflow',
+  components: {
+      Code
+  },
   setup() {
     const listNodes = readonly([
           {
@@ -79,9 +85,9 @@ export default {
               output:0
           },
           {
-              name: 'Assing',
+              name: 'Assign',
               color: '#DCACCE',
-              item: 'NodeAssing',
+              item: 'NodeAssign',
               input:1,
               output:1
           },
@@ -198,7 +204,7 @@ export default {
         editor.value.registerNode('NodeMath', NodeMath, {}, {});
         editor.value.registerNode('NodeNumber', NodeNumber, {}, {});
         editor.value.registerNode('NodePrint', NodePrint, {}, {});
-        editor.value.registerNode('NodeAssing', NodeAssing, {}, {});
+        editor.value.registerNode('NodeAssign', NodeAssign, {}, {});
         editor.value.registerNode('NodeIf', NodeIf, {}, {});
         editor.value.registerNode('NodeElse', NodeElse, {}, {});
         editor.value.registerNode('NodeFor', NodeFor, {}, {});
@@ -210,7 +216,7 @@ export default {
 
 
     return {
-      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData
+      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, Code
     }
 
   },

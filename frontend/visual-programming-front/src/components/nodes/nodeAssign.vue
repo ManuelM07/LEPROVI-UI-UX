@@ -1,6 +1,6 @@
 <template>
     <div ref="el">
-        <nodeHeader  title="Assing"/>
+        <nodeHeader  title="Assign"/>
         <el-input v-model="url" df-url placeholder="Please number input" size="small">
         </el-input>
     </div>

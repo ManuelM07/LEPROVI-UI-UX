@@ -7,11 +7,18 @@
     "preview": "vite preview --port 4173"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.0.2",
+    "@codemirror/lang-python": "^6.0.1",
+    "@codemirror/theme-one-dark": "^6.0.0",
     "@element-plus/icons": "^0.0.11",
     "axios": "^0.27.2",
+    "codemirror": "^6.0.1",
     "drawflow": "^0.0.59",
     "element-plus": "^2.2.14",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vue-codemirror": "^6.1.1",
+    "vue-codemirror-lite": "^1.0.4",
+    "vue-router": "^4.1.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.1",

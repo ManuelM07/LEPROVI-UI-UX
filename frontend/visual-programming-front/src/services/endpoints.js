@@ -12,8 +12,12 @@ const apiClient = axios.create({
 
 // Exportamos los métodos para las peticiones
 export default {
+  //getId
   getPrograms() {
     return apiClient.get("/posts");
+  },
+  createProgram() {
+    return apiClient.post("/posts", data);
   },
   runProgram(data) { 
     return apiClient.post("/posts/run", data);
