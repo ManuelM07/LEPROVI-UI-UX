@@ -19,6 +19,9 @@ export default {
   createProgram() {
     return apiClient.post("/posts", data);
   },
+  program(data) { 
+    return apiClient.post("/posts/program", data);
+  },
   runProgram(data) { 
     return apiClient.post("/posts/run", data);
   }
