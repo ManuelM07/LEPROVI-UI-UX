@@ -12,13 +12,16 @@
     "@codemirror/theme-one-dark": "^6.0.0",
     "@element-plus/icons": "^0.0.11",
     "axios": "^0.27.2",
+    "bootstrap": "^5.2.0",
+    "bootstrap-vue": "^2.22.0",
     "codemirror": "^6.0.1",
     "drawflow": "^0.0.59",
     "element-plus": "^2.2.14",
-    "vue": "^3.2.37",
+    "vue": "^3.2.38",
     "vue-codemirror": "^6.1.1",
     "vue-codemirror-lite": "^1.0.4",
-    "vue-router": "^4.1.5"
+    "vue-router": "^4.1.5",
+    "vue3-easy-data-table": "^1.4.17"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^3.0.1",

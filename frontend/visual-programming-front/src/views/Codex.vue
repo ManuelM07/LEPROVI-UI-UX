@@ -4,6 +4,7 @@
     placeholder="Code goes here..."
     :style="{ height: '400px' }"
     :autofocus="true"
+    :autoDestroy="true"
     :indent-with-tab="true"
     :tab-size="2"
     :extensions="extensions"
@@ -28,7 +29,6 @@
     components: {
       Codemirror
     },
-
     setup(props) {
       const code = ref(props.codex)
       const extensions = [python(), oneDark]
@@ -40,7 +40,7 @@
       }
 
       // Status is available at all times via Codemirror EditorView
-      const getCodemirrorStates = () => {
+      /*const getCodemirrorStates = () => {
         const state = view.value.state
         const ranges = state.selection.ranges
         const selected = ranges.reduce((r, range) => r + range.to - range.from, 0)
@@ -49,7 +49,7 @@
         const lines = state.doc.lines
         // more state info ...
         // return ...
-      }
+      }*/
 
       return {
         code,

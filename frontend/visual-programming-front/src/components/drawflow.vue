@@ -23,9 +23,10 @@
     title="Export"
     width="70%"
   >
-  <div>
-    <Code codex="print('Hellooo!')"/>
-  </div>
+  <span>Code:</span>
+  <pre><code>{{codeData}}</code></pre>
+  <span>Console:</span>
+  <pre><code>{{consoleData}}</code></pre>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
@@ -53,14 +54,15 @@ import NodeComOp from './nodes/nodeComOp.vue'
 import EventService from "@/services/endpoints.js";
 import Code from '../views/Codex.vue'
 
-
-
+//let resCode = ref("print('Hola')")
 
 export default {
   name: 'drawflow',
-  components: {
-      Code
-  },
+  data() {
+      return {
+        text: ''
+      }
+    },
   setup() {
     const listNodes = readonly([
           {
@@ -120,7 +122,9 @@ export default {
               output:1,
           },
       ])
-    
+    const consoleDataJson = ref({})
+    const codeData = ref("")
+    const consoleData = ref("")
     const editor = shallowRef({})
     const dialogVisible = ref(false)
     const dialogData = ref({})
@@ -128,11 +132,11 @@ export default {
     const internalInstance = getCurrentInstance()
     internalInstance.appContext.app._context.config.globalProperties.$df = editor;
     
-      function exportEditor() {
+    function exportEditor() {
           let data = editor.value.export();
           dialogData.value = data.drawflow.Home.data
-          dialogVisible.value = true;
           console.log(data.drawflow.Home.data);
+
 
           //let response = await EventService.runProgram(dialogData.value).then(res => res.json());
           //console.log(response.data);
@@ -141,10 +145,17 @@ export default {
           //console.log("YEAH: "+ users.value  )
 
           (async () => {
-          const res = await EventService.runProgram(data.drawflow.Home.data);
-          //users.value = res.data;
-          //console.log(res.data.foo[0].name);
+            const res = await EventService.runProgram(data.drawflow.Home.data);
+            //users.value = res.data;
+            //console.log(res.data.foo[0].name);
+            //res.code
+            codeData.value = res.data.code
+            consoleDataJson.value = JSON.parse((res.data.output))
+            consoleData.value = JSON.parse((res.data.output)).output
+            dialogVisible.value = true;
+            console.log(JSON.parse((res.data.output)).output)
           })()
+          //console.log(res.code)
       }
 
       const drag = (ev) => {
@@ -212,19 +223,15 @@ export default {
 
         //editor.value.import({"drawflow":{"Home":{"data":{"5":{"id":5,"name":"NodeNumber","data":{"script":"(req,res) => {\n console.log(req);\n}"},"class":"NodeNumber","html":"NodeNumber","typenode":"vue","inputs":{"input_1":{"connections":[{"node":"6","input":"output_1"}]}},"outputs":{"output_1":{"connections":[]},"output_2":{"connections":[]}},"pos_x":1000,"pos_y":117},"6":{"id":6,"name":"NodeMath","data":{"url":"localhost/add", "method": "add"},"class":"NodeMath","html":"NodeMath","typenode":"vue","inputs":{},"outputs":{"output_1":{"connections":[{"node":"5","output":"input_1"}]}},"pos_x":137,"pos_y":89}}}}})
     })
-
-
-
     return {
-      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, Code
+      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData
     }
 
   },
-
-  async created() {
+  /*async created() {
     let response = await EventService.getPrograms();
     console.log(response.data);
-  },  
+  }, */ 
 }
 
 </script>

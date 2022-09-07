@@ -1,6 +1,6 @@
 <script>
   import Home from './components/drawflow.vue'
-  import About from './views/Codex.vue'
+  import About from './components/tableNodes.vue'
   
   const routes = {
     '/': Home,
@@ -27,7 +27,12 @@
   </script>
   
   <template>
-    <a href="#/">Home</a> |
-    <a href="#/about">About</a> |
+  <el-header class="header">
+    <el-button type="primary" plain><a href="#/">Home</a></el-button>
+    <el-button type="success" plain><a href="#/about">About</a></el-button>
     <component :is="currentView" />
+  </el-header>
   </template>
+
+  <style>
+  </style>
