@@ -1,48 +1,85 @@
 <template>
 
-<el-container>
-  <el-header class="header">
-      <h3>Visual Programming</h3>
-      <el-button type="primary"   @click="exportEditor">Run</el-button>
-  </el-header>
-  <el-container class="container">
-    <el-aside width="250px" class="column">
-        <ul>
-            <li v-for="n in listNodes" :key="n" draggable="true" :data-node="n.item" @dragstart="drag($event)" class="drag-drawflow" >
-                <div class="node" :style="`background: ${n.color}`" >{{ n.name }}</div>
-            </li>
-        </ul>
-    </el-aside>
-    <el-main>
-        <div id="drawflow" @drop="drop($event)" @dragover="allowDrop($event)"></div>
-    </el-main>
+  <el-container>
+    <!-- Header -->
+    <el-header class="header">
+        <h3>Visual Programming</h3>
+        <el-button :plain="true" type="primary"  @click="exportEditor">
+          <el-icon :size="30" class="el-icon--left" ><View /></el-icon> 
+          Code</el-button>
+    </el-header>
+    <!-- Nodes -->
+    <el-container class="container">
+      <!-- Stand of nodes -->
+      <el-aside width="250px" class="column">
+          <ul>
+              <li v-for="n in listNodes" :key="n" draggable="true" :data-node="n.item" @dragstart="drag($event)" class="drag-drawflow" >
+                  <div class="node" :style="`background: ${n.color}`" >{{ n.name }}</div>
+              </li>
+          </ul>
+      </el-aside>
+      <!-- Board -->
+      <el-main>
+          <div id="drawflow" @drop="drop($event)" @dragover="allowDrop($event)"></div>
+      </el-main>
+    </el-container>
   </el-container>
-</el-container>
-<el-dialog
-    v-model="dialogVisible"
-    title="Export"
-    width="70%"
-  >
-  <span>Code:</span>
-  <pre><code>{{codeData}}</code></pre>
-  <span>Console:</span>
-  <pre><code>{{consoleData}}</code></pre>
+  <!-- Dialog Code & Console -->
+  <el-dialog
+      v-model="dialogVisible"
+      title="Export"
+      width="70%"
+    >
+    <template #header>
+      <div class="my-header">
+        <el-button type="success" @click="runProgram">
+          <el-icon :size="30" class="el-icon--left"><CaretRight /></el-icon>
+            Run</el-button
+          >
+      </div>
+    </template>
+    <span>Code:</span>
+    <pre><code>{{codeData}}</code></pre>
+    <span>Console:</span>
+    <pre><code>{{consoleData}}</code></pre>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogVisible = false"
+        <el-button type="primary" @click="dialogFormVisible = true"
+          >Save</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
+
+  <!-- Dialog Form -->
+  <el-dialog v-model="dialogFormVisible" title="Register data">
+    <el-form :model="form">
+      <el-form-item label="Username" :label-width="formLabelWidth">
+        <el-input v-model="form.name" autocomplete="off" />
+      </el-form-item>
+      <el-form-item label="Program name" :label-width="formLabelWidth">
+        <el-input v-model="form.program" autocomplete="off" />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button :plain="true" type="primary" @click="saveProgram"
           >Confirm</el-button
         >
       </span>
     </template>
   </el-dialog>
 </template>
+
+
 <script>
 
 import Drawflow from 'drawflow'
 import styleDrawflow from 'drawflow/dist/drawflow.min.css'
 import style from '../assets/style.css' 
-import { onMounted, shallowRef, h, getCurrentInstance, render, readonly, ref } from 'vue'
+import { onMounted, shallowRef, h, getCurrentInstance, render, readonly, ref, reactive } from 'vue'
 import NodeMath from './nodes/nodeMath.vue'
 import NodeNumber from './nodes/nodeNumber.vue'
 import NodePrint from './nodes/nodePrint.vue'
@@ -53,8 +90,8 @@ import NodeFor from './nodes/nodeFor.vue'
 import NodeComOp from './nodes/nodeComOp.vue'
 import EventService from "@/services/endpoints.js";
 import Code from '../views/Codex.vue'
+import { ElMessage } from 'element-plus'
 
-//let resCode = ref("print('Hola')")
 
 export default {
   name: 'drawflow',
@@ -122,7 +159,13 @@ export default {
               output:1,
           },
       ])
-    const consoleDataJson = ref({})
+      const form = reactive({
+        name: '',
+        program: '',
+      })
+
+    const saveProgramData = ref({})
+    const dialogFormVisible = ref(false)
     const codeData = ref("")
     const consoleData = ref("")
     const editor = shallowRef({})
@@ -133,55 +176,89 @@ export default {
     internalInstance.appContext.app._context.config.globalProperties.$df = editor;
     
     function exportEditor() {
-          let data = editor.value.export();
-          dialogData.value = data.drawflow.Home.data
-          console.log(data.drawflow.Home.data);
+      let data = editor.value.export();
+      dialogData.value = data.drawflow.Home.data
+      console.log(dialogData);
 
-
-          //let response = await EventService.runProgram(dialogData.value).then(res => res.json());
-          //console.log(response.data);
-          //const users = ref([])
-          //EventService.getPrograms().then(({ data }) => (users.value = data))
-          //console.log("YEAH: "+ users.value  )
-
-          (async () => {
-            const res = await EventService.runProgram(data.drawflow.Home.data);
-            //users.value = res.data;
-            //console.log(res.data.foo[0].name);
-            //res.code
-            codeData.value = res.data.code
-            consoleDataJson.value = JSON.parse((res.data.output))
-            consoleData.value = JSON.parse((res.data.output)).output
-            dialogVisible.value = true;
-            console.log(JSON.parse((res.data.output)).output)
-          })()
-          //console.log(res.code)
-      }
-
-      const drag = (ev) => {
-        if (ev.type === "touchstart") {
-          mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
-        } else {
-        ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
+      (async () => {
+        try {
+          const res = await EventService.program(data.drawflow.Home.data);
+          codeData.value = res.data
+          consoleData.value = ""
+          dialogVisible.value = true;
+          console.log(codeData)
+        } catch (error) {
+          open4()
         }
-      }
-      const drop = (ev) => {
-        if (ev.type === "touchend") {
-          var parentdrawflow = document.elementFromPoint( mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
-          if(parentdrawflow != null) {
-            addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
-          }
-          mobile_item_selec = '';
-        } else {
-          ev.preventDefault();
-          var data = ev.dataTransfer.getData("node");
-          addNodeToDrawFlow(data, ev.clientX, ev.clientY);
-        }
+      })()
+          
+    }
 
+    function runProgram() {
+      (async () => {
+          const res = await EventService.runProgram({"code": codeData.value});
+          console.log(codeData.value)
+          consoleData.value = res.data.output
+      })()
+    }
+
+    function saveProgram() {
+      saveProgramData.value = {
+        "Uid":          "_:",
+        "Name":         form.name,
+        "program_name": form.program,
+        "Body":         codeData.value
+      };
+    
+      (async () => {
+          const res = await EventService.createProgram(saveProgramData.value);
+          console.log(res.data)
+          dialogFormVisible.value = false
+          dialogVisible.value = false;
+          open2()
+      })()
+    }
+
+    const open2 = () => {
+      ElMessage({
+        message: 'Program saved successfully.',
+        type: 'success',
+      })
+    }
+
+    const open4 = () => {
+      ElMessage({
+        showClose: true,
+        message: 'Oops, your code is not correct, please check.',
+        type: 'error',
+      })
+    }
+
+    const drag = (ev) => {
+      if (ev.type === "touchstart") {
+        mobile_item_selec = ev.target.closest(".drag-drawflow").getAttribute('data-node');
+      } else {
+      ev.dataTransfer.setData("node", ev.target.getAttribute('data-node'));
       }
-      const allowDrop = (ev) => {
+    }
+
+    const drop = (ev) => {
+      if (ev.type === "touchend") {
+        var parentdrawflow = document.elementFromPoint( mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY).closest("#drawflow");
+        if(parentdrawflow != null) {
+          addNodeToDrawFlow(mobile_item_selec, mobile_last_move.touches[0].clientX, mobile_last_move.touches[0].clientY);
+        }
+        mobile_item_selec = '';
+      } else {
         ev.preventDefault();
+        var data = ev.dataTransfer.getData("node");
+        addNodeToDrawFlow(data, ev.clientX, ev.clientY);
       }
+    }
+
+    const allowDrop = (ev) => {
+      ev.preventDefault();
+    }
 
     let mobile_item_selec = '';
     let mobile_last_move = null;
@@ -189,18 +266,17 @@ export default {
       mobile_last_move = ev;
     }
 
-      function addNodeToDrawFlow(name, pos_x, pos_y) {
-        pos_x = pos_x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)));
-        pos_y = pos_y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)));
+    function addNodeToDrawFlow(name, pos_x, pos_y) {
+      pos_x = pos_x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().x * ( editor.value.precanvas.clientWidth / (editor.value.precanvas.clientWidth * editor.value.zoom)));
+      pos_y = pos_y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)) - (editor.value.precanvas.getBoundingClientRect().y * ( editor.value.precanvas.clientHeight / (editor.value.precanvas.clientHeight * editor.value.zoom)));
+    
+      const nodeSelected = listNodes.find(ele => ele.item == name);
+      editor.value.addNode(name, nodeSelected.input,  nodeSelected.output, pos_x, pos_y, name, {}, name, 'vue');
       
-        const nodeSelected = listNodes.find(ele => ele.item == name);
-        editor.value.addNode(name, nodeSelected.input,  nodeSelected.output, pos_x, pos_y, name, {}, name, 'vue');
-        
-      }
+    }
 
 
     onMounted(() => {
-
         var elements = document.getElementsByClassName('drag-drawflow');
         for (var i = 0; i < elements.length; i++) {
           elements[i].addEventListener('touchend', drop, false);
@@ -224,57 +300,62 @@ export default {
         //editor.value.import({"drawflow":{"Home":{"data":{"5":{"id":5,"name":"NodeNumber","data":{"script":"(req,res) => {\n console.log(req);\n}"},"class":"NodeNumber","html":"NodeNumber","typenode":"vue","inputs":{"input_1":{"connections":[{"node":"6","input":"output_1"}]}},"outputs":{"output_1":{"connections":[]},"output_2":{"connections":[]}},"pos_x":1000,"pos_y":117},"6":{"id":6,"name":"NodeMath","data":{"url":"localhost/add", "method": "add"},"class":"NodeMath","html":"NodeMath","typenode":"vue","inputs":{},"outputs":{"output_1":{"connections":[{"node":"5","output":"input_1"}]}},"pos_x":137,"pos_y":89}}}}})
     })
     return {
-      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData
+      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, dialogFormVisible, form, saveProgram, saveProgramData, open2, open4
     }
 
   },
-  /*async created() {
-    let response = await EventService.getPrograms();
-    console.log(response.data);
-  }, */ 
 }
 
 </script>
+
+
 <style scoped>
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #494949;
-}
-.container {
-    min-height: calc(100vh - 100px);
-}
-.column {
-    border-right: 1px solid #494949;
-}
-.column ul {
-    padding-inline-start: 0px;
-    padding: 10px 10px;
+  .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #494949;
+  }
+  .container {
+      min-height: calc(100vh - 100px);
+  }
+  .column {
+      border-right: 1px solid #494949;
+  }
+  .column ul {
+      padding-inline-start: 0px;
+      padding: 10px 10px;
+      
+  }
+  .column li {
+      background: transparent;
+  }
+
+  .node {
+      border-radius: 8px;
+      border: 2px solid #141579c8;
+      display: block;
+      height:60px;
+      line-height:40px;
+      padding: 10px;
+      margin: 10px 0px;
+      cursor: move;
+  }
+
+  #drawflow {
+    width: 100%;
+    height: 100%;
+    text-align: initial;
+    background: #132055;
+    background-size: 20px 20px;
+    background-image: radial-gradient(#494949 1px, transparent 1px);
     
-}
-.column li {
-    background: transparent;
-}
+  }
 
-.node {
-    border-radius: 8px;
-    border: 2px solid #7ac8efc8;
-    display: block;
-    height:60px;
-    line-height:40px;
-    padding: 10px;
-    margin: 10px 0px;
-    cursor: move;
+  .my-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
 
-}
-#drawflow {
-  width: 100%;
-  height: 100%;
-  text-align: initial;
-  background: #132055;
-  background-size: 20px 20px;
-  background-image: radial-gradient(#494949 1px, transparent 1px);
-  
-}
 </style>
