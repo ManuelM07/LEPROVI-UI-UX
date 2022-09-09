@@ -1,10 +1,10 @@
 <script>
   import Home from './components/drawflow.vue'
-  import About from './components/tableNodes.vue'
+  import Programs from './components/tableNodes.vue'
   
   const routes = {
     '/': Home,
-    '/about': About
+    '/programs': Programs
   }
   
   export default {
@@ -24,15 +24,20 @@
       })
     }
   }
-  </script>
+</script>
   
-  <template>
-  <el-header class="header">
+<template>
+  <el-container class="container">
+  <el-header class="header-router header">
     <el-button type="primary" plain><a href="#/">Home</a></el-button>
-    <el-button type="success" plain><a href="#/about">About</a></el-button>
+    <el-button type="primary" plain><a href="#/programs">Programs</a></el-button>
     <component :is="currentView" />
   </el-header>
-  </template>
+</el-container>
+</template>
 
-  <style>
-  </style>
+<style>
+  .header-router {
+    background-color: #132055;
+  }
+</style>
