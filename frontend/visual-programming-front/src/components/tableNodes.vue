@@ -1,5 +1,8 @@
 <template>
   <el-container class="container">
+    <el-header class="header">
+        <h3>Visual Programming</h3>
+    </el-header>
     <el-main>
       <EasyDataTable
         theme-color="#1d90ff"
@@ -18,7 +21,6 @@
   <el-dialog
     v-model="outerVisible"
     title="Export"
-    width="70%"
   >
     <template #header>
       <div class="my-header">
@@ -29,10 +31,14 @@
       </div>
     <!-- Code & Console-->
     </template>
-    <span>Code:</span>
-    <pre><code>{{programSelect}}</code></pre>
-    <span>Console:</span>
-    <pre><code>{{consoleData}}</code></pre>
+    <div class="code-editor">
+      <span>Code:</span>
+      <pre><code>{{programSelect}}</code></pre>
+      <el-divider>
+        <el-icon><star-filled /></el-icon>
+      </el-divider>
+      <pre><code>{{consoleData}}</code></pre>
+    </div>
     <template #footer>
       <span class="dialog-footer">
       </span>
@@ -92,6 +98,7 @@
 <style>
   .container {
     min-height: calc(100vh - 100px);
+    background-color: #e8f0f1;
   }
 
   .customize-table {
@@ -133,5 +140,14 @@
     --easy-table-scrollbar-corner-color: #2d3a4f;
 
     --easy-table-loading-mask-background-color: #2d3a4f;
+  }
+
+  .code-editor {
+    background: #132055;
+    color: white
+  }
+
+  .code-editorX {
+    background: #132055;
   }
 </style>
