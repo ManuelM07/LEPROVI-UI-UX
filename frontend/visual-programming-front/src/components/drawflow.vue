@@ -1,15 +1,23 @@
 <template>
 
-  <el-container>
+  <el-container class="container">
     <!-- Header -->
     <el-header class="header">
         <h3>Visual Programming</h3>
+        <el-select v-model="value" clearable placeholder="Select languaje">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
         <el-button :plain="true" type="primary"  @click="exportEditor">
           <el-icon :size="30" class="el-icon--left" ><View /></el-icon> 
           Code</el-button>
     </el-header>
     <!-- Nodes -->
-    <el-container class="container">
+    <el-container >
       <!-- Stand of nodes -->
       <el-aside width="250px" class="column">
           <ul>
@@ -38,11 +46,17 @@
           >
       </div>
     </template>
-    <span>Code:</span>
-    <pre><code>{{codeData}}</code></pre>
-    <span>Console:</span>
-    <pre><code>{{consoleData}}</code></pre>
+    <div class="code-editor">
+      <span>Code:</span>
+      <pre><code>{{codeData}}</code></pre>
+      <el-divider>
+        <el-icon><star-filled /></el-icon>
+      </el-divider>
+      <pre><code>{{consoleData}}</code></pre>
+    </div>
+
     <template #footer>
+
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
         <el-button type="primary" @click="dialogFormVisible = true"
@@ -88,6 +102,8 @@ import NodeIf from './nodes/nodeIf.vue'
 import NodeElse from './nodes/nodeElse.vue'
 import NodeFor from './nodes/nodeFor.vue'
 import NodeComOp from './nodes/nodeComOp.vue'
+import NodeString from './nodes/nodeString.vue'
+import NodeStringOp from './nodes/nodeStringOp.vue'
 import EventService from "@/services/endpoints.js";
 import Code from '../views/Codex.vue'
 import { ElMessage } from 'element-plus'
@@ -95,11 +111,6 @@ import { ElMessage } from 'element-plus'
 
 export default {
   name: 'drawflow',
-  data() {
-      return {
-        text: ''
-      }
-    },
   setup() {
     const listNodes = readonly([
           {
@@ -158,11 +169,25 @@ export default {
               input:0,
               output:1,
           },
+          {
+              name: 'String',
+              color: '#9688CE',
+              item: 'NodeString',
+              input:0,
+              output:1,
+          },
+          {
+              name: 'String Operations',
+              color: '#96BACE',
+              item: 'NodeStringOp',
+              input:1,
+              output:1,
+          },
       ])
-      const form = reactive({
-        name: '',
-        program: '',
-      })
+    const form = reactive({
+      name: '',
+      program: '',
+    })
 
     const saveProgramData = ref({})
     const dialogFormVisible = ref(false)
@@ -173,16 +198,30 @@ export default {
     const dialogData = ref({})
     const Vue = { version: 3, h, render };
     const internalInstance = getCurrentInstance()
+    const value = ref('')
+    const options = [
+      {
+        value: 'python3',
+        label: 'Python3',
+      },
+      {
+        value: 'nodejs',
+        label: 'JavaScript',
+      },
+    ]
     internalInstance.appContext.app._context.config.globalProperties.$df = editor;
     
     function exportEditor() {
+      if (value.value == "") {
+        value.value = "python3"
+      }
       let data = editor.value.export();
       dialogData.value = data.drawflow.Home.data
       console.log(dialogData);
 
       (async () => {
         try {
-          const res = await EventService.program(data.drawflow.Home.data);
+          const res = await EventService.program({"code": data.drawflow.Home.data, "languaje": value.value});
           codeData.value = res.data
           consoleData.value = ""
           dialogVisible.value = true;
@@ -196,7 +235,7 @@ export default {
 
     function runProgram() {
       (async () => {
-          const res = await EventService.runProgram({"code": codeData.value});
+          const res = await EventService.runProgram({"code": codeData.value, "languaje": value.value, versionIndex: "4"});
           console.log(codeData.value)
           consoleData.value = res.data.output
       })()
@@ -296,11 +335,13 @@ export default {
         editor.value.registerNode('NodeElse', NodeElse, {}, {});
         editor.value.registerNode('NodeFor', NodeFor, {}, {});
         editor.value.registerNode('NodeComOp', NodeComOp, {}, {});
+        editor.value.registerNode('NodeString', NodeString, {}, {});
+        editor.value.registerNode('NodeStringOp', NodeStringOp, {}, {});
 
         //editor.value.import({"drawflow":{"Home":{"data":{"5":{"id":5,"name":"NodeNumber","data":{"script":"(req,res) => {\n console.log(req);\n}"},"class":"NodeNumber","html":"NodeNumber","typenode":"vue","inputs":{"input_1":{"connections":[{"node":"6","input":"output_1"}]}},"outputs":{"output_1":{"connections":[]},"output_2":{"connections":[]}},"pos_x":1000,"pos_y":117},"6":{"id":6,"name":"NodeMath","data":{"url":"localhost/add", "method": "add"},"class":"NodeMath","html":"NodeMath","typenode":"vue","inputs":{},"outputs":{"output_1":{"connections":[{"node":"5","output":"input_1"}]}},"pos_x":137,"pos_y":89}}}}})
     })
     return {
-      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, dialogFormVisible, form, saveProgram, saveProgramData, open2, open4
+      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options
     }
 
   },
@@ -356,6 +397,11 @@ export default {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+  }
+
+  .code-editor {
+    background: #132055;
+    color: white
   }
 
 </style>
