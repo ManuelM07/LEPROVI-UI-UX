@@ -16,7 +16,7 @@ export default {
   getPrograms() {
     return apiClient.get("/posts");
   },
-  createProgram() {
+  createProgram(data) {
     return apiClient.post("/posts", data);
   },
   program(data) { 

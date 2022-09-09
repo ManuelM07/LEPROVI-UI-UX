@@ -107,7 +107,7 @@
   "resolved" "https://registry.npmjs.org/@ctrl/tinycolor/-/tinycolor-3.4.1.tgz"
   "version" "3.4.1"
 
-"@element-plus/icons-vue@^2.0.6":
+"@element-plus/icons-vue@^2.0.6", "@element-plus/icons-vue@^2.0.9":
   "integrity" "sha512-okdrwiVeKBmW41Hkl0eMrXDjzJwhQMuKiBOu17rOszqM+LS/yBYpNQNV5Jvoh06Wc+89fMmb/uhzf8NZuDuUaQ=="
   "resolved" "https://registry.npmjs.org/@element-plus/icons-vue/-/icons-vue-2.0.9.tgz"
   "version" "2.0.9"
@@ -194,6 +194,22 @@
   "integrity" "sha512-w7hEHXnPMEZ+4nGKl/KDRVpxkwYxYExuHOYXyzIzCDzEZ9ZCGMAewulr9IqJu2LR4N37fcnb1XVeuZ09qgOxhA=="
   "resolved" "https://registry.npmjs.org/@types/web-bluetooth/-/web-bluetooth-0.0.15.tgz"
   "version" "0.0.15"
+
+"@uiw/codemirror-theme-dracula@^4.12.1":
+  "integrity" "sha512-Mw7fCOxvUzsUU0aB53QmVRG0+rWgaJ/z464uuMlP5JK83fHKIKSICj2ny0zV1daGTJrqG67YesvKqruieaoMSw=="
+  "resolved" "https://registry.npmjs.org/@uiw/codemirror-theme-dracula/-/codemirror-theme-dracula-4.12.1.tgz"
+  "version" "4.12.1"
+  dependencies:
+    "@uiw/codemirror-themes" "4.12.1"
+
+"@uiw/codemirror-themes@4.12.1":
+  "integrity" "sha512-q3w+9Dc5pemj9J4dz74W6/adnevtPIkpeTP6fcjGsMbFZRnoZVd8CfZ7AOubCO0uGIejifU1C2MU9WQbzDEIHg=="
+  "resolved" "https://registry.npmjs.org/@uiw/codemirror-themes/-/codemirror-themes-4.12.1.tgz"
+  "version" "4.12.1"
+  dependencies:
+    "@codemirror/language" "^6.0.0"
+    "@codemirror/state" "^6.0.0"
+    "@codemirror/view" "^6.0.0"
 
 "@vitejs/plugin-vue@^3.0.1":
   "integrity" "sha512-U4zNBlz9mg+TA+i+5QPc3N5lQvdUXENZLO2h0Wdzp56gI1MWhqJOv+6R+d4kOzoaSSq6TnGPBdZAXKOe4lXy6g=="
@@ -380,7 +396,20 @@
     "ansi-styles" "^4.1.0"
     "supports-color" "^7.1.0"
 
+"codemirror-editor-vue3@^2.1.7":
+  "integrity" "sha512-Pj4p9vacexMk6P1XEjxriHU/Xna4V/6+KzJbUE8lwxx0wbCrAopuCHSdJSKpsMWhYj/enkaNVFoIp1MAfvqTgw=="
+  "resolved" "https://registry.npmjs.org/codemirror-editor-vue3/-/codemirror-editor-vue3-2.1.7.tgz"
+  "version" "2.1.7"
+  dependencies:
+    "codemirror" "^5.64.0"
+    "diff-match-patch" "^1.0.5"
+
 "codemirror@^5.22.0":
+  "integrity" "sha512-TNGkSkkoAsmZSf6W6g35LMVQJBHKasc2CKwhr/fTxSYun7cn6J+CbtyNjV/MYlFVkNTsqZoviegyCZimWhoMMA=="
+  "resolved" "https://registry.npmjs.org/codemirror/-/codemirror-5.65.8.tgz"
+  "version" "5.65.8"
+
+"codemirror@^5.64.0":
   "integrity" "sha512-TNGkSkkoAsmZSf6W6g35LMVQJBHKasc2CKwhr/fTxSYun7cn6J+CbtyNjV/MYlFVkNTsqZoviegyCZimWhoMMA=="
   "resolved" "https://registry.npmjs.org/codemirror/-/codemirror-5.65.8.tgz"
   "version" "5.65.8"
@@ -446,6 +475,11 @@
   "integrity" "sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ=="
   "resolved" "https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz"
   "version" "1.0.0"
+
+"diff-match-patch@^1.0.5":
+  "integrity" "sha512-IayShXAgj/QMXgB0IWmKx+rOPuGMhqm5w6jvFxmVenXKIzRqTAAsbBPT3kWQeGANj3jGgvcvv4yK6SxqYmikgw=="
+  "resolved" "https://registry.npmjs.org/diff-match-patch/-/diff-match-patch-1.0.5.tgz"
+  "version" "1.0.5"
 
 "drawflow@^0.0.59":
   "integrity" "sha512-HJM/8trYzignViTMzUSpskRclDhE62jM6oxjgqEJQBbkX9QvDG7JJwRlvdjqnjfL192Pdb0aIysrZMUqG8/vyg=="
