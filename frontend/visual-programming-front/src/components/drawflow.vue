@@ -174,14 +174,14 @@ export default {
           },
           {
               name: 'String',
-              color: '#9688CE',
+              color: '#C9F52F',
               item: 'NodeString',
               input:0,
               output:1,
           },
           {
               name: 'String Operations',
-              color: '#96BACE',
+              color: '#EB4C62',
               item: 'NodeStringOp',
               input:1,
               output:1,
