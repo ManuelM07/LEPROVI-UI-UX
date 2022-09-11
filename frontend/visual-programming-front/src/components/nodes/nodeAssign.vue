@@ -1,7 +1,7 @@
 <template>
     <div ref="el">
         <nodeHeader  title="Assign"/>
-        <el-input v-model="url" df-url placeholder="Please number input" size="small">
+        <el-input v-model="url" df-url placeholder="Please name var input" size="small">
         </el-input>
     </div>
 </template>

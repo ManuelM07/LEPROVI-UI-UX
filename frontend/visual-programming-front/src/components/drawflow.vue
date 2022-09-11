@@ -12,8 +12,11 @@
             :value="item.value"
           />
         </el-select>
+        <el-button type="danger" @click="clearData" plain>
+          <el-icon :size="30" class="el-icon--left"><Delete /></el-icon>
+          Clear</el-button>
         <el-button :plain="true" type="primary"  @click="exportEditor">
-          <el-icon :size="30" class="el-icon--left" ><View /></el-icon> 
+          <el-icon :size="30" class="el-icon--left"><View /></el-icon> 
           Code</el-button>
     </el-header>
     <!-- Nodes -->
@@ -246,7 +249,8 @@ export default {
         "Uid":          "_:",
         "Name":         form.name,
         "program_name": form.program,
-        "Body":         codeData.value
+        "Body":         codeData.value,
+        "Languaje":     value.value
       };
     
       (async () => {
@@ -256,6 +260,14 @@ export default {
           dialogVisible.value = false;
           open2()
       })()
+
+      form.name = ""
+      form.program = ""
+
+    }
+
+    function clearData() {
+      editor.value.clear('drawflow');
     }
 
     const open2 = () => {
@@ -338,10 +350,10 @@ export default {
         editor.value.registerNode('NodeString', NodeString, {}, {});
         editor.value.registerNode('NodeStringOp', NodeStringOp, {}, {});
 
-        //editor.value.import({"drawflow":{"Home":{"data":{"5":{"id":5,"name":"NodeNumber","data":{"script":"(req,res) => {\n console.log(req);\n}"},"class":"NodeNumber","html":"NodeNumber","typenode":"vue","inputs":{"input_1":{"connections":[{"node":"6","input":"output_1"}]}},"outputs":{"output_1":{"connections":[]},"output_2":{"connections":[]}},"pos_x":1000,"pos_y":117},"6":{"id":6,"name":"NodeMath","data":{"url":"localhost/add", "method": "add"},"class":"NodeMath","html":"NodeMath","typenode":"vue","inputs":{},"outputs":{"output_1":{"connections":[{"node":"5","output":"input_1"}]}},"pos_x":137,"pos_y":89}}}}})
     })
     return {
-      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options
+      exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, 
+      dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options, clearData
     }
 
   },

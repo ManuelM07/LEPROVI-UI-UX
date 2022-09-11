@@ -1,8 +1,5 @@
 <template>
   <el-container class="container">
-    <el-header class="header">
-        <h3>Visual Programming</h3>
-    </el-header>
     <el-main>
       <EasyDataTable
         theme-color="#1d90ff"
@@ -57,10 +54,12 @@
     setup() {
       const consoleData = ref("")
       const programSelect = ref("")
+      const languajeSelect = ref("")
       const dataItems = ref([])
       const outerVisible = ref(false)
       const showRow = (item: ClickRowArgument) => {
         programSelect.value = item.body
+        languajeSelect.value = item.languaje
         consoleData.value = ""
         outerVisible.value = true
         console.log((item))
@@ -68,6 +67,7 @@
       const headers: Header[] = [
         { text: "USERNAME", value: "name" },
         { text: "PROGRAM NAME", value: "program_name"},
+        { text: "LANGUAJE", value: "languaje"},
       ];
       const items: Item[] = dataItems
 
@@ -82,13 +82,13 @@
 
       function runProgram() {
         (async () => {
-          const res = await EventService.runProgram({"code": programSelect.value});
+          const res = await EventService.runProgram({"code": programSelect.value, "languaje": languajeSelect.value, versionIndex: "4"});
           consoleData.value = res.data.output
         })()
       }
 
       return {
-        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData
+        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect
       }
     } 
   }
@@ -147,7 +147,4 @@
     color: white
   }
 
-  .code-editorX {
-    background: #132055;
-  }
 </style>
