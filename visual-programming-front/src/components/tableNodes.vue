@@ -1,7 +1,7 @@
 <template>
   <el-container class="container">
     <el-header class="header">
-        <h3>LEPROVI</h3> 
+      <h3><el-icon :size="30" class="el-icon--left"><Bicycle /></el-icon>LEPROVI</h3>
     </el-header>
     <el-main>
       <EasyDataTable

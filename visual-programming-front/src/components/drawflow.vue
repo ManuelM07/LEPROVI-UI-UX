@@ -3,7 +3,7 @@
   <el-container class="container">
     <!-- Header -->
     <el-header class="header">
-        <h3>LEPROVI</h3>
+        <h3><el-icon :size="30" class="el-icon--left"><Bicycle /></el-icon>LEPROVI</h3>
         <el-select v-model="value" clearable placeholder="Select languaje">
           <el-option
             v-for="item in options"
