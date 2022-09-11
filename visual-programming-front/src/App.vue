@@ -29,8 +29,8 @@
 <template>
   <el-container class="container">
   <el-header class="header-router header">
-    <el-button type="primary" plain><a href="#/" class="button">Home</a></el-button>
-    <el-button type="primary" plain><a href="#/programs" class="button">Programs</a></el-button>
+    <el-button type="primary" plain class="button"><a href="#/" class="button">Home</a></el-button>
+    <el-button type="primary" plain class="button"><a href="#/programs" class="button">Programs</a></el-button>
     <component :is="currentView" />
   </el-header>
 </el-container>
@@ -47,6 +47,13 @@
     appearance: button;
 
     text-decoration: none;
-    color: initial;
+    color: white;
+    font-size: large;
+  }
+
+  .button {
+    padding: 0; 
+    border: none; 
+    background: none;
   }
 </style>
