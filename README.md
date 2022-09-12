@@ -28,6 +28,9 @@ npm install
 npm run dev
 ```
 
+Now the API will run on port 5173
+```http://localhost:5173```
+
 ### Compile and Minify for Production
 
 ```sh
