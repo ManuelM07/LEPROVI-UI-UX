@@ -39,7 +39,7 @@
   <el-dialog
       v-model="dialogVisible"
       title="Export"
-      width="70%"
+      width="50%"
     >
     <template #header>
       <div class="my-header">
@@ -70,7 +70,7 @@
   </el-dialog>
 
   <!-- Dialog Form -->
-  <el-dialog v-model="dialogFormVisible" title="Register data">
+  <el-dialog v-model="dialogFormVisible" title="Register data" width="30%">
     <el-form :model="form">
       <el-form-item label="Username" :label-width="formLabelWidth">
         <el-input v-model="form.name" autocomplete="off" />
@@ -413,6 +413,10 @@ export default {
   .code-editor {
     background: #132055;
     color: white
+  }
+
+  .header-router {
+    background-color: #132055;
   }
 
 </style>
