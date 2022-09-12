@@ -31,9 +31,16 @@
       </div>
     <!-- Code & Console-->
     </template>
+    <Codemirror
+    v-model:value="code"
+    :options="cmOptions"
+    border
+    :disabled="true"
+    placeholder="测试 placeholder"
+    :height="200"
+    @change="change"
+    />
     <div class="code-editor">
-      <span>Code:</span>
-      <pre><code>{{programSelect}}</code></pre>
       <el-divider>
         <el-icon><star-filled /></el-icon>
       </el-divider>
@@ -51,6 +58,12 @@
   import { ref } from 'vue'
   import type { Header, Item, ClickRowArgument } from "vue3-easy-data-table";
   import EventService from "@/services/endpoints.js";
+  import Codemirror from "codemirror-editor-vue3";
+
+  // language
+  import "codemirror/mode/javascript/javascript.js";
+  // theme
+  import "codemirror/theme/dracula.css";
 
 
   export default {
@@ -60,8 +73,10 @@
       const languajeSelect = ref("")
       const dataItems = ref([])
       const outerVisible = ref(false)
+      const code = ref(` `);
       const showRow = (item: ClickRowArgument) => {
         programSelect.value = item.body
+        code.value = programSelect.value
         languajeSelect.value = item.languaje
         consoleData.value = ""
         outerVisible.value = true
@@ -91,7 +106,17 @@
       }
 
       return {
-        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect
+        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect, code,
+        cmOptions: {
+          mode: "text/javascript",
+          theme: "dracula",
+          lineNumbers: false,
+          smartIndent: true,
+          indentUnit: 2,
+          foldGutter: true,
+          styleActiveLine: true,
+          readOnly: true,
+        },
       }
     } 
   }
@@ -146,7 +171,7 @@
   }
 
   .code-editor {
-    background: #132055;
+    background: #302c34;
     color: white
   }
 

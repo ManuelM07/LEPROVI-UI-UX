@@ -49,15 +49,20 @@
           >
       </div>
     </template>
+    <Codemirror
+    v-model:value="code"
+    :options="cmOptions"
+    border
+    placeholder="测试 placeholder"
+    :height="200"
+    @change="onChange"
+    />
     <div class="code-editor">
-      <span>Code:</span>
-      <pre><code>{{codeData}}</code></pre>
       <el-divider>
-        <el-icon><star-filled /></el-icon>
+          <el-icon><star-filled /></el-icon>
       </el-divider>
       <pre><code>{{consoleData}}</code></pre>
     </div>
-
     <template #footer>
 
       <span class="dialog-footer">
@@ -109,11 +114,18 @@ import NodeString from './nodes/nodeString.vue'
 import NodeStringOp from './nodes/nodeStringOp.vue'
 import EventService from "@/services/endpoints.js";
 import { ElMessage } from 'element-plus'
+import Codemirror from "codemirror-editor-vue3";
 
+// language
+import "codemirror/mode/javascript/javascript.js";
+// theme
+import "codemirror/theme/dracula.css";
 
 export default {
   name: 'drawflow',
+  components: { Codemirror },
   setup() {
+    const code = ref(` `);
     const listNodes = readonly([
           {
               name: 'Math Operations',
@@ -227,6 +239,7 @@ export default {
           codeData.value = res.data
           consoleData.value = ""
           dialogVisible.value = true;
+          code.value = codeData.value
           console.log(codeData)
         } catch (error) {
           open4()
@@ -237,7 +250,7 @@ export default {
 
     function runProgram() {
       (async () => {
-          const res = await EventService.runProgram({"code": codeData.value, "languaje": value.value, versionIndex: "4"});
+          const res = await EventService.runProgram({"code": code.value, "languaje": value.value, versionIndex: "4"});
           console.log(codeData.value)
           consoleData.value = res.data.output
       })()
@@ -248,7 +261,7 @@ export default {
         "Uid":          "_:",
         "Name":         form.name,
         "program_name": form.program,
-        "Body":         codeData.value,
+        "Body":         code.value,
         "Languaje":     value.value
       };
     
@@ -352,7 +365,16 @@ export default {
     })
     return {
       exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, 
-      dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options, clearData
+      dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options, clearData, code,
+      cmOptions: {
+        mode: "text/javascript",
+        theme: "dracula",
+        lineNumbers: false,
+        smartIndent: true,
+        indentUnit: 2,
+        foldGutter: true,
+        styleActiveLine: true,
+      },
     }
 
   },
@@ -411,7 +433,7 @@ export default {
   }
 
   .code-editor {
-    background: #132055;
+    background: #302c34;
     color: white
   }
 
