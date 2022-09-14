@@ -50,10 +50,11 @@
       </div>
     </template>
     <Codemirror
+    class="CodeMirror"
     v-model:value="code"
     :options="cmOptions"
     border
-    placeholder="测试 placeholder"
+    placeholder=""
     :height="200"
     @change="onChange"
     />
@@ -117,9 +118,9 @@ import { ElMessage } from 'element-plus'
 import Codemirror from "codemirror-editor-vue3";
 
 // language
-import "codemirror/mode/javascript/javascript.js";
+import "codemirror/mode/python/python.js";
 // theme
-import "codemirror/theme/dracula.css";
+import "codemirror/theme/monokai.css";
 
 export default {
   name: 'drawflow',
@@ -203,6 +204,7 @@ export default {
       program: '',
     })
 
+    const mode = ref("")
     const saveProgramData = ref({})
     const dialogFormVisible = ref(false)
     const codeData = ref("")
@@ -229,6 +231,12 @@ export default {
       if (value.value == "") {
         value.value = "python3"
       }
+      if (value.value == "python3") {
+        mode.value = "python"
+      } else {
+        mode.value = "javascript"
+      }
+
       let data = editor.value.export();
       dialogData.value = data.drawflow.Home.data
       console.log(dialogData);
@@ -365,10 +373,10 @@ export default {
     })
     return {
       exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, 
-      dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options, clearData, code,
+      dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options, clearData, code, mode,
       cmOptions: {
-        mode: "text/javascript",
-        theme: "dracula",
+        mode: mode,
+        theme: "monokai",
         lineNumbers: false,
         smartIndent: true,
         indentUnit: 2,
@@ -433,12 +441,17 @@ export default {
   }
 
   .code-editor {
-    background: #302c34;
+    background: #272822;
     color: white
   }
 
   .header-router {
-    background-color: #132055;
+    background-color: #373831;
+    font-size: 30px;
+  }
+
+  .CodeMirror {
+    font-size: 20px;
   }
 
 </style>

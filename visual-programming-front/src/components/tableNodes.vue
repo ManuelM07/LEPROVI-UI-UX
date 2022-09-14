@@ -32,11 +32,12 @@
     <!-- Code & Console-->
     </template>
     <Codemirror
+    class="CodeMirror"
     v-model:value="code"
     :options="cmOptions"
     border
     :disabled="true"
-    placeholder="测试 placeholder"
+    placeholder=""
     :height="200"
     @change="change"
     />
@@ -68,6 +69,7 @@
 
   export default {
     setup() {
+      const mode = ref("")
       const consoleData = ref("")
       const programSelect = ref("")
       const languajeSelect = ref("")
@@ -79,6 +81,11 @@
         code.value = programSelect.value
         languajeSelect.value = item.languaje
         consoleData.value = ""
+        if (item.languaje == "python3") {
+          mode.value = "python"
+        } else {
+          mode.value = "javascript"
+        }
         outerVisible.value = true
         console.log((item))
       };
@@ -106,10 +113,10 @@
       }
 
       return {
-        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect, code,
+        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect, code, mode,
         cmOptions: {
-          mode: "text/javascript",
-          theme: "dracula",
+          mode: mode,
+          theme: "monokai",
           lineNumbers: false,
           smartIndent: true,
           indentUnit: 2,
@@ -171,8 +178,12 @@
   }
 
   .code-editor {
-    background: #302c34;
+    background: #272822;
     color: white
+  }
+
+  .CodeMirror {
+    font-size: 20px;
   }
 
 </style>
