@@ -94,7 +94,7 @@
         { text: "PROGRAM NAME", value: "program_name"},
         { text: "LANGUAJE", value: "languaje"},
       ];
-      const items: Item[] = dataItems
+      const items = ref(dataItems)
 
       programs()
       function programs() {

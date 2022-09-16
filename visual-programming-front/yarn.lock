@@ -381,6 +381,11 @@
   dependencies:
     "mime-db" "1.52.0"
 
+"module-name@^0.0.1-security":
+  "integrity" "sha512-yuuTU5MhBuxtUPjTIqBz3AR2z3yrBr7yjPvpHbKLu5N3iWBRji2RnNAysonzft26mMUO+vA2tB3uiAqbZ6jXAQ=="
+  "resolved" "https://registry.npmjs.org/module-name/-/module-name-0.0.1-security.tgz"
+  "version" "0.0.1-security"
+
 "nanoid@^3.3.4":
   "integrity" "sha512-MqBkQh/OHTS2egovRtLk45wEyNXwF+cokD+1YPf9u5VfJiRdAiRwB2froX5Co9Rh20xs4siNPm8naNotSD6RBw=="
   "resolved" "https://registry.npmjs.org/nanoid/-/nanoid-3.3.4.tgz"

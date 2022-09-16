@@ -13,6 +13,7 @@
     "codemirror-editor-vue3": "^2.1.7",
     "drawflow": "^0.0.59",
     "element-plus": "^2.2.14",
+    "module-name": "^0.0.1-security",
     "vue": "^3.2.38",
     "vue-router": "^4.1.5",
     "vue3-easy-data-table": "^1.4.17"
