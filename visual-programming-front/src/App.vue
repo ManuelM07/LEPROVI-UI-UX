@@ -1,3 +1,13 @@
+<template>
+  <el-container class="container">
+  <el-header class="header-router header">
+    <el-button type="primary" plain class="button"><a href="#/" class="button">Home</a></el-button>
+    <el-button type="primary" plain class="button"><a href="#/programs" class="button">Programs</a></el-button>
+    <component :is="currentView" />
+  </el-header>
+</el-container>
+</template>
+
 <script>
   import Home from './components/drawflow.vue'
   import Programs from './components/tableNodes.vue'
@@ -25,16 +35,6 @@
     }
   }
 </script>
-  
-<template>
-  <el-container class="container">
-  <el-header class="header-router header">
-    <el-button type="primary" plain class="button"><a href="#/" class="button">Home</a></el-button>
-    <el-button type="primary" plain class="button"><a href="#/programs" class="button">Programs</a></el-button>
-    <component :is="currentView" />
-  </el-header>
-</el-container>
-</template>
 
 <style>
   .header-router {
