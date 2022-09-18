@@ -113,6 +113,7 @@ import NodeFor from './nodes/nodeFor.vue'
 import NodeComOp from './nodes/nodeComOp.vue'
 import NodeString from './nodes/nodeString.vue'
 import NodeStringOp from './nodes/nodeStringOp.vue'
+import NodeMoveLeft from './nodes/nodeMove.vue'
 import EventService from "@/services/endpoints.js";
 import { ElMessage } from 'element-plus'
 import Codemirror from "codemirror-editor-vue3";
@@ -139,7 +140,7 @@ export default {
               name: 'Number',
               color: '#67F095',
               item: 'NodeNumber',
-              input:0,
+              input:1,
               output:1
           },
           {
@@ -161,7 +162,7 @@ export default {
               color: '#1CE6CE',
               item: 'NodeIf',
               input:3,
-              output:2,
+              output:1,
           },
           {
               name: 'Else',
@@ -181,14 +182,14 @@ export default {
               name: 'Comparison Operators',
               color: '#F08A4F',
               item: 'NodeComOp',
-              input:0,
+              input:1,
               output:1,
           },
           {
               name: 'String',
               color: '#C9F52F',
               item: 'NodeString',
-              input:0,
+              input:1,
               output:1,
           },
           {
@@ -197,6 +198,13 @@ export default {
               item: 'NodeStringOp',
               input:1,
               output:1,
+          },
+          {
+              name: 'Move Left',
+              color: '#C9F52F',
+              item: 'NodeMoveLeft',
+              input:0,
+              output:0,
           },
       ])
     const form = reactive({
@@ -250,7 +258,7 @@ export default {
           code.value = codeData.value
           console.log(codeData)
         } catch (error) {
-          open4()
+          alertMessage()
         }
       })()
           
@@ -278,7 +286,7 @@ export default {
           console.log(res.data)
           dialogFormVisible.value = false
           dialogVisible.value = false;
-          open2()
+          successMessage()
       })()
 
       form.name = ""
@@ -290,14 +298,14 @@ export default {
       editor.value.clear('drawflow');
     }
 
-    const open2 = () => {
+    const successMessage = () => {
       ElMessage({
         message: 'Program saved successfully.',
         type: 'success',
       })
     }
 
-    const open4 = () => {
+    const alertMessage = () => {
       ElMessage({
         showClose: true,
         message: 'Oops, your code is not correct, please check.',
@@ -369,11 +377,12 @@ export default {
         editor.value.registerNode('NodeComOp', NodeComOp, {}, {});
         editor.value.registerNode('NodeString', NodeString, {}, {});
         editor.value.registerNode('NodeStringOp', NodeStringOp, {}, {});
+        editor.value.registerNode('NodeMoveLeft', NodeMoveLeft, {}, {});
 
     })
     return {
       exportEditor, listNodes, drag, drop, allowDrop, dialogVisible, dialogData, codeData, consoleData, runProgram, 
-      dialogFormVisible, form, saveProgram, saveProgramData, open2, open4, value, options, clearData, code, mode,
+      dialogFormVisible, form, saveProgram, saveProgramData, successMessage, alertMessage, value, options, clearData, code, mode,
       cmOptions: {
         mode: mode,
         theme: "monokai",
