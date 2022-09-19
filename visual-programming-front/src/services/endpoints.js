@@ -24,5 +24,8 @@ export default {
   },
   runProgram(data) { 
     return apiClient.post("/posts/run", data);
+  },
+  updateProgram(data) {
+    return apiClient.put("/posts", data);
   }
 };
