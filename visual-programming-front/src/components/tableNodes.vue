@@ -64,6 +64,8 @@
   import type { Header, Item, ClickRowArgument } from "vue3-easy-data-table";
   import EventService from "@/services/endpoints.js";
   import Codemirror from "codemirror-editor-vue3";
+  import { ElMessage } from 'element-plus'
+
 
   // language
   import "codemirror/mode/javascript/javascript.js";
@@ -134,14 +136,22 @@
             const res = await EventService.updateProgram({"uid": uid.value, "body": code.value});
             consoleData.value = res.data.output
             outerVisible.value = false
+            successMessage()
             programs()
           })()
         } 
       }
 
+      const successMessage = () => {
+        ElMessage({
+          message: 'Program updated successfully.',
+          type: 'success',
+        })
+      }
+
       return {
         showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect, code, mode, nameButtom,
-        readOnlyAux, updateProgram, uid, 
+        readOnlyAux, updateProgram, uid, successMessage, 
         cmOptions: {
           mode: mode,
           theme: "monokai",

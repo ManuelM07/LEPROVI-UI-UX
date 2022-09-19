@@ -201,7 +201,7 @@ export default {
           },
           {
               name: 'Move Left',
-              color: '#C9F52F',
+              color: '#74FBCA',
               item: 'NodeMoveLeft',
               input:0,
               output:0,
