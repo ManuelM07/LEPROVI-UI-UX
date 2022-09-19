@@ -49,6 +49,10 @@
     </div>
     <template #footer>
       <span class="dialog-footer">
+        <el-button @click="outerVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="updateProgram"
+          >{{nameButtom}}</el-button
+        >
       </span>
     </template>
   </el-dialog>
@@ -81,11 +85,17 @@
         code.value = programSelect.value
         languajeSelect.value = item.languaje
         consoleData.value = ""
+        nameButtom.value = "Update"
+        readOnlyAux.value = true
+        uid.value = item.uid
+        console.log(item)
+
         if (item.languaje == "python3") {
           mode.value = "python"
         } else {
           mode.value = "javascript"
         }
+
         outerVisible.value = true
         console.log((item))
       };
@@ -95,6 +105,9 @@
         { text: "LANGUAJE", value: "languaje"},
       ];
       const items = ref(dataItems)
+      const nameButtom = ref("Update")
+      const readOnlyAux = ref(true)
+      const uid = ref(true)
 
       programs()
       function programs() {
@@ -112,8 +125,23 @@
         })()
       }
 
+      function updateProgram() {
+        if (nameButtom.value == "Update") {
+          nameButtom.value = "Save"
+          readOnlyAux.value = false
+        } else {
+          (async () => {
+            const res = await EventService.updateProgram({"uid": uid.value, "body": code.value});
+            consoleData.value = res.data.output
+            outerVisible.value = false
+            programs()
+          })()
+        } 
+      }
+
       return {
-        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect, code, mode,
+        showRow, headers, items, dataItems, outerVisible, programSelect, runProgram, consoleData, languajeSelect, code, mode, nameButtom,
+        readOnlyAux, updateProgram, uid, 
         cmOptions: {
           mode: mode,
           theme: "monokai",
@@ -122,7 +150,7 @@
           indentUnit: 2,
           foldGutter: true,
           styleActiveLine: true,
-          readOnly: true,
+          readOnly: readOnlyAux,
         },
       }
     } 
